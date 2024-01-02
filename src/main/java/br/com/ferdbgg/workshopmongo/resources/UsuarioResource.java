@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.ferdbgg.workshopmongo.domain.Usuario;
@@ -28,22 +29,14 @@ public class UsuarioResource {
         return ResponseEntity.ok().body(usuariosDTO);
     }
 
-    /*@Autowired
-    private UsuarioService usuarioService;
-
-    @GetMapping
-    public ResponseEntity<List<Usuario>> findAll(){
-        List<Usuario> usuarios = this.usuarioService.findAll();
-        return ResponseEntity.ok().body(usuarios);
-    }
-    
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable Integer id){
-        Usuario usuario = this.usuarioService.findById(id);
-        return ResponseEntity.ok().body(usuario);
+    public ResponseEntity<UsuarioDTO> findById(@PathVariable String id){
+        final Usuario usuario = this.usuarioService.findById(id);
+        final UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
+        return ResponseEntity.ok().body(usuarioDTO);
     }
 
-    @PostMapping
+    /*@PostMapping
     public ResponseEntity<Usuario> insert(@RequestBody Usuario novoUsuario){
         Usuario usuario = this.usuarioService.insert(novoUsuario);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId()).toUri();
