@@ -1,10 +1,13 @@
 package br.com.ferdbgg.workshopmongo.services;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import br.com.ferdbgg.workshopmongo.domain.Usuario;
 import br.com.ferdbgg.workshopmongo.repositories.UsuarioRepository;
+import br.com.ferdbgg.workshopmongo.services.exceptions.ObjetoNaoEncontradoException;
 
 @Service
 public class UsuarioService {
@@ -19,12 +22,12 @@ public class UsuarioService {
         return this.usuarioRepository.findAll();
     }
 
-    /*public Usuario findById(Integer id) {
+    public Usuario findById(String id) {
         Optional<Usuario> usuario = this.usuarioRepository.findById(id);
         return usuario.orElseThrow(() -> new ObjetoNaoEncontradoException(id));
     }
 
-    public Usuario insert(Usuario novoUsuario) {
+    /*public Usuario insert(Usuario novoUsuario) {
         return this.usuarioRepository.save(novoUsuario);
     }
 
