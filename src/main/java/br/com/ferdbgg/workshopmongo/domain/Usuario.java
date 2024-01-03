@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import br.com.ferdbgg.workshopmongo.dtos.UsuarioDTO;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,4 +27,11 @@ public class Usuario implements Serializable {
     private String id;
     private String nome;
     private String email;
+
+    public Usuario(UsuarioDTO usuarioDTO) {
+        this.id = usuarioDTO.getId();
+        this.nome = usuarioDTO.getNome();
+        this.email = usuarioDTO.getEmail();
+    }
+
 }
