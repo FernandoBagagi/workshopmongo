@@ -31,20 +31,21 @@ public class UsuarioService {
         return this.usuarioRepository.save(novoUsuario);
     }
 
-    /*public void deleteById(Integer id) {
+    public void deleteById(String id) {
         Optional<Usuario> usuario = this.usuarioRepository.findById(id);
         if(usuario.isPresent()) {
-            try {
+            this.usuarioRepository.deleteById(id);
+            /*try {
                 this.usuarioRepository.deleteById(id);
             } catch(DataIntegrityViolationException exception) {
                 throw new BancoDadosException(exception.getMessage());
-            }
+            }*/
         } else {
             throw new ObjetoNaoEncontradoException(id);
         }
     }
 
-    public Usuario update(Integer id, Usuario usuarioNovosDados) {
+    /*public Usuario update(Integer id, Usuario usuarioNovosDados) {
         Usuario usuarioMonitoradoJPA = this.usuarioRepository.getReferenceById(id);
         //Dá EntityNotFoundException ao tentar acessar uma entidade que não está persistida
         try {
