@@ -27,11 +27,11 @@ public class UsuarioService {
         return usuario.orElseThrow(() -> new ObjetoNaoEncontradoException(id));
     }
 
-    /*public Usuario insert(Usuario novoUsuario) {
+    public Usuario insert(Usuario novoUsuario) {
         return this.usuarioRepository.save(novoUsuario);
     }
 
-    public void deleteById(Integer id) {
+    /*public void deleteById(Integer id) {
         Optional<Usuario> usuario = this.usuarioRepository.findById(id);
         if(usuario.isPresent()) {
             try {
