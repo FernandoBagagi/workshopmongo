@@ -45,28 +45,25 @@ public class UsuarioService {
         }
     }
 
-    /*public Usuario update(Integer id, Usuario usuarioNovosDados) {
-        Usuario usuarioMonitoradoJPA = this.usuarioRepository.getReferenceById(id);
-        //Dá EntityNotFoundException ao tentar acessar uma entidade que não está persistida
-        try {
-            this.atualizarDados(usuarioMonitoradoJPA, usuarioNovosDados);
-            return this.usuarioRepository.save(usuarioMonitoradoJPA);
-        } catch(EntityNotFoundException exception) {
+    public Usuario update(String id, Usuario usuarioNovosDados) {
+        Optional<Usuario> usuario = this.usuarioRepository.findById(id);
+        if(usuario.isPresent()) {
+            final Usuario usuarioBanco = usuario.get();
+            this.atualizarDados(usuarioBanco, usuarioNovosDados);
+            return this.usuarioRepository.save(usuarioBanco);    
+        } else {
             throw new ObjetoNaoEncontradoException(id);
         }
     }
 
-    private void atualizarDados(Usuario usuarioMonitoradoJPA, Usuario usuarioNovosDados) {
+    private void atualizarDados(Usuario usuarioBanco, Usuario usuarioNovosDados) {
         //Verificar se a regra de negócio permite colocar null ou não
         if(usuarioNovosDados.getNome() != null) {
-            usuarioMonitoradoJPA.setNome(usuarioNovosDados.getNome()); 
+            usuarioBanco.setNome(usuarioNovosDados.getNome()); 
         }
         if(usuarioNovosDados.getEmail() != null) {
-            usuarioMonitoradoJPA.setEmail(usuarioNovosDados.getEmail());
+            usuarioBanco.setEmail(usuarioNovosDados.getEmail());
         }
-        if(usuarioNovosDados.getTelefone() != null) {
-            usuarioMonitoradoJPA.setTelefone(usuarioNovosDados.getTelefone());
-        }
-    }*/
+    }
 
 }
