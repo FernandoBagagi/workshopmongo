@@ -44,8 +44,8 @@ public class UsuarioResource {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> insert(@RequestBody UsuarioDTO novoUsuario){
-        final Usuario usuario = this.usuarioService.insert(new Usuario(novoUsuario));
+    public ResponseEntity<UsuarioDTO> insert(@RequestBody UsuarioDTO novoUsuario){
+        final UsuarioDTO usuario = new UsuarioDTO(this.usuarioService.insert(new Usuario(novoUsuario)));
         final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body(usuario);
     }
@@ -57,8 +57,8 @@ public class UsuarioResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable String id, @RequestBody UsuarioDTO usuarioNovosDados){
-        final Usuario usuario = this.usuarioService.update(id, new Usuario(usuarioNovosDados));
+    public ResponseEntity<UsuarioDTO> update(@PathVariable String id, @RequestBody UsuarioDTO usuarioNovosDados){
+        final UsuarioDTO usuario = new UsuarioDTO(this.usuarioService.update(id, new Usuario(usuarioNovosDados)));
         return ResponseEntity.ok().body(usuario);
     }
 
