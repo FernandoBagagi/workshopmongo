@@ -27,5 +27,5 @@ public class Instanciacao implements CommandLineRunner {
         usuariosDumb.add(new Usuario(null, "Carlos José", "carlos@gmail.com"));
         this.usuarioRepository.saveAll(usuariosDumb);
     }
-    
+
 }
