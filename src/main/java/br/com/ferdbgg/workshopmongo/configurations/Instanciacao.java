@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import br.com.ferdbgg.workshopmongo.domain.Post;
 import br.com.ferdbgg.workshopmongo.domain.Usuario;
 import br.com.ferdbgg.workshopmongo.dtos.AutorDTO;
+import br.com.ferdbgg.workshopmongo.dtos.ComentarioDTO;
 import br.com.ferdbgg.workshopmongo.repositories.PostRepository;
 import br.com.ferdbgg.workshopmongo.repositories.UsuarioRepository;
 
@@ -40,9 +41,13 @@ public class Instanciacao implements CommandLineRunner {
         usuariosDumb.add(new Usuario(null, "Carlos José", "carlos@gmail.com"));
         this.usuarioRepository.saveAll(usuariosDumb);
 
+        List<ComentarioDTO> comentariosDumb = new ArrayList<>();
+        comentariosDumb.add(new ComentarioDTO("Boa viagem", simpleDateFormat.parse("2018-03-21"), new AutorDTO(usuariosDumb.get(1))));
+        comentariosDumb.add(new ComentarioDTO("Boa viagem!!", simpleDateFormat.parse("2018-03-21"), new AutorDTO(usuariosDumb.get(2))));
+
         List<Post> postsDumb = new ArrayList<>();
-        postsDumb.add(new Post(null, simpleDateFormat.parse("2018-03-21"), "Partiu viagem", "Vou viajar para São Paulo. Abraços!", new AutorDTO(usuariosDumb.get(0))));
-        postsDumb.add(new Post(null, simpleDateFormat.parse("2018-03-23"), "Bom dia", "Acordei feliz hoje!", new AutorDTO(usuariosDumb.get(0))));
+        postsDumb.add(new Post(null, simpleDateFormat.parse("2018-03-21"), "Partiu viagem", "Vou viajar para São Paulo. Abraços!", new AutorDTO(usuariosDumb.get(0)), comentariosDumb));
+        postsDumb.add(new Post(null, simpleDateFormat.parse("2018-03-23"), "Bom dia", "Acordei feliz hoje!", new AutorDTO(usuariosDumb.get(0)), new ArrayList<>()));
         this.postRepository.saveAll(postsDumb);
 
         usuariosDumb.get(0).getPosts().add(postsDumb.get(0));
