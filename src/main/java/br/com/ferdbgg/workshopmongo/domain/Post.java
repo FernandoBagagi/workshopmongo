@@ -2,11 +2,13 @@ package br.com.ferdbgg.workshopmongo.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import br.com.ferdbgg.workshopmongo.dtos.AutorDTO;
+import br.com.ferdbgg.workshopmongo.dtos.ComentarioDTO;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -30,5 +32,6 @@ public class Post implements Serializable {
     private String titulo;
     private String corpo;
     private AutorDTO autor;
+    private List<ComentarioDTO> comentarios;
 
 }
