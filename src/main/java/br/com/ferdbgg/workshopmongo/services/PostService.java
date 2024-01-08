@@ -1,5 +1,6 @@
 package br.com.ferdbgg.workshopmongo.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,17 @@ public class PostService {
     public Post findById(String id) {
         Optional<Post> post = this.postRepository.findById(id);
         return post.orElseThrow(() -> new ObjetoNaoEncontradoException(id));
+    }
+
+    public List<Post> findByTituloContaining(String palavra) {
+        //return this.postRepository.findByTituloContainingIgnoreCase(palavra);
+        //return this.postRepository.findByTituloContainingIgnoreCase(palavra);
+        return this.postRepository.encontrarPorTitulo(palavra);
+    }
+
+    public List<Post> findContaining(String palavra, Date dataMin, Date dataMax) {
+        dataMax = new Date(dataMax.getTime() + 24 * 60 * 60 * 1000); //Pra ir até 00:00 do outro dia
+        return this.postRepository.buscaCompleta(palavra, dataMin, dataMax);
     }
 
     public Post insert(Post novoPost) {
