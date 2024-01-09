@@ -9,7 +9,6 @@ import br.com.ferdbgg.workshopmongo.domain.Post;
 import java.util.Date;
 import java.util.List;
 
-
 @Repository
 public interface PostRepository extends MongoRepository<Post, String> {
 
@@ -21,7 +20,7 @@ public interface PostRepository extends MongoRepository<Post, String> {
      */
 
     List<Post> findByTituloContaining(String palavra);
-    
+
     List<Post> findByTituloContainingIgnoreCase(String palavra);
 
     @Query("{ titulo : { $regex: ?0, $options: 'i' } }")
@@ -30,6 +29,6 @@ public interface PostRepository extends MongoRepository<Post, String> {
     @Query("{ $and: [ { $or: [ { titulo : { $regex: ?0, $options: 'i' } }, { corpo : { $regex: ?0, $options: 'i' } } ] }, { data: { $gte: ?1 } }, { data: { $lte: ?2 } } ] }")
     List<Post> buscaCompleta(String palavra, Date dataMin, Date dataMax);
 
-    //TODO: ver porque não foi acessando assim
-    //, { comentarios.texto : { $regex: ?0, $options: 'i' } }
+    // TODO: ver porque não foi acessando assim
+    // , { comentarios.texto : { $regex: ?0, $options: 'i' } }
 }
