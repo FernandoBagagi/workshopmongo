@@ -14,7 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ObjetoExceptionHandler {
 
     @ExceptionHandler(ObjetoNaoEncontradoException.class)
-    public ResponseEntity<PadraoError> objetoNaoEncontrado(ObjetoNaoEncontradoException exception, HttpServletRequest request) {
+    public ResponseEntity<PadraoError> objetoNaoEncontrado(ObjetoNaoEncontradoException exception,
+            HttpServletRequest request) {
         final HttpStatus status = HttpStatus.NOT_FOUND;
         final PadraoError erro = new PadraoError();
         erro.setTimestamp(Instant.now());
@@ -25,16 +26,19 @@ public class ObjetoExceptionHandler {
         return ResponseEntity.status(status).body(erro);
     }
 
-    /*@ExceptionHandler(BancoDadosException.class)
-    public ResponseEntity<PadraoError> erroBancoDados(BancoDadosException exception, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        PadraoError erro = new PadraoError();
-        erro.setTimestamp(Instant.now());
-        erro.setStatus(status.value());
-        erro.setError("Não foi possível realizar a operação no banco de dados");
-        erro.setMessage(exception.getMessage());
-        erro.setPath(request.getRequestURI());
-        return ResponseEntity.status(status).body(erro);
-    }*/
-    
+    /*
+     * @ExceptionHandler(BancoDadosException.class)
+     * public ResponseEntity<PadraoError> erroBancoDados(BancoDadosException
+     * exception, HttpServletRequest request) {
+     * HttpStatus status = HttpStatus.BAD_REQUEST;
+     * PadraoError erro = new PadraoError();
+     * erro.setTimestamp(Instant.now());
+     * erro.setStatus(status.value());
+     * erro.setError("Não foi possível realizar a operação no banco de dados");
+     * erro.setMessage(exception.getMessage());
+     * erro.setPath(request.getRequestURI());
+     * return ResponseEntity.status(status).body(erro);
+     * }
+     */
+
 }
