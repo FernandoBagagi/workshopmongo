@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PadraoError implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
