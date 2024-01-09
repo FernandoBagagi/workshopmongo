@@ -42,12 +42,16 @@ public class Instanciacao implements CommandLineRunner {
         this.usuarioRepository.saveAll(usuariosDumb);
 
         List<ComentarioDTO> comentariosDumb = new ArrayList<>();
-        comentariosDumb.add(new ComentarioDTO("Boa viagem", simpleDateFormat.parse("2018-03-21"), new AutorDTO(usuariosDumb.get(1))));
-        comentariosDumb.add(new ComentarioDTO("Boa viagem!!", simpleDateFormat.parse("2018-03-21"), new AutorDTO(usuariosDumb.get(2))));
+        comentariosDumb.add(new ComentarioDTO("Boa viagem", simpleDateFormat.parse("2018-03-21"),
+                new AutorDTO(usuariosDumb.get(1))));
+        comentariosDumb.add(new ComentarioDTO("Boa viagem!!", simpleDateFormat.parse("2018-03-21"),
+                new AutorDTO(usuariosDumb.get(2))));
 
         List<Post> postsDumb = new ArrayList<>();
-        postsDumb.add(new Post(null, simpleDateFormat.parse("2018-03-21"), "Partiu viagem", "Vou viajar para São Paulo. Abraços!", new AutorDTO(usuariosDumb.get(0)), comentariosDumb));
-        postsDumb.add(new Post(null, simpleDateFormat.parse("2018-03-23"), "Bom dia", "Acordei feliz hoje!", new AutorDTO(usuariosDumb.get(0)), new ArrayList<>()));
+        postsDumb.add(new Post(null, simpleDateFormat.parse("2018-03-21"), "Partiu viagem",
+                "Vou viajar para São Paulo. Abraços!", new AutorDTO(usuariosDumb.get(0)), comentariosDumb));
+        postsDumb.add(new Post(null, simpleDateFormat.parse("2018-03-23"), "Bom dia", "Acordei feliz hoje!",
+                new AutorDTO(usuariosDumb.get(0)), new ArrayList<>()));
         this.postRepository.saveAll(postsDumb);
 
         usuariosDumb.get(0).getPosts().add(postsDumb.get(0));
