@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class UtilURL {
-    
+
     private UtilURL() {
 
     }
