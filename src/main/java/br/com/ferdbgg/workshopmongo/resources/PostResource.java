@@ -30,48 +30,53 @@ public class PostResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<Post>> findAll(){
+    public ResponseEntity<List<Post>> findAll() {
         final List<Post> posts = this.postService.findAll();
         return ResponseEntity.ok().body(posts);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Post> findById(@PathVariable String id){
+    public ResponseEntity<Post> findById(@PathVariable String id) {
         final Post post = this.postService.findById(id);
         return ResponseEntity.ok().body(post);
     }
 
     @GetMapping(value = "/procuraPorTitulo")
-    public ResponseEntity<List<Post>> findByTituloContaining(@RequestParam(value = "palavra", defaultValue = "") String palavra){
+    public ResponseEntity<List<Post>> findByTituloContaining(
+            @RequestParam(value = "palavra", defaultValue = "") String palavra) {
         final String palavraDecodificada = UtilURL.decodificarParametroURL(palavra);
         final List<Post> posts = this.postService.findByTituloContaining(palavraDecodificada);
         return ResponseEntity.ok().body(posts);
     }
 
     @GetMapping(value = "/procura")
-    public ResponseEntity<List<Post>> findContaining(@RequestParam(value = "palavra", defaultValue = "") String palavra, @RequestParam(value = "dataMin", defaultValue = "") String dataMin, @RequestParam(value = "dataMax", defaultValue = "") String dataMax){
+    public ResponseEntity<List<Post>> findContaining(@RequestParam(value = "palavra", defaultValue = "") String palavra,
+            @RequestParam(value = "dataMin", defaultValue = "") String dataMin,
+            @RequestParam(value = "dataMax", defaultValue = "") String dataMax) {
         final String palavraDecodificada = UtilURL.decodificarParametroURL(palavra);
         final Date dataMinDecodificada = UtilURL.converterDataURL(dataMin, new Date(0L));
         final Date dataMaxDecodificada = UtilURL.converterDataURL(dataMax);
-        final List<Post> posts = this.postService.findContaining(palavraDecodificada, dataMinDecodificada, dataMaxDecodificada);
+        final List<Post> posts = this.postService.findContaining(palavraDecodificada, dataMinDecodificada,
+                dataMaxDecodificada);
         return ResponseEntity.ok().body(posts);
     }
 
     @PostMapping
-    public ResponseEntity<Post> insert(@RequestBody Post novoPost){
+    public ResponseEntity<Post> insert(@RequestBody Post novoPost) {
         final Post post = this.postService.insert(novoPost);
-        final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(post.getId()).toUri();
+        final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(post.getId())
+                .toUri();
         return ResponseEntity.created(uri).body(post);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable String id){
+    public ResponseEntity<Void> deleteById(@PathVariable String id) {
         this.postService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Post> update(@PathVariable String id, @RequestBody Post postNovosDados){
+    public ResponseEntity<Post> update(@PathVariable String id, @RequestBody Post postNovosDados) {
         final Post post = this.postService.update(id, postNovosDados);
         return ResponseEntity.ok().body(post);
     }
