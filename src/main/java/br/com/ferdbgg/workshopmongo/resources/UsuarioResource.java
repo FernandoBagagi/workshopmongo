@@ -31,40 +31,41 @@ public class UsuarioResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<UsuarioDTO>> findAll(){
+    public ResponseEntity<List<UsuarioDTO>> findAll() {
         final List<Usuario> usuarios = this.usuarioService.findAll();
         final List<UsuarioDTO> usuariosDTO = usuarios.stream().map(UsuarioDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok().body(usuariosDTO);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UsuarioDTO> findById(@PathVariable String id){
+    public ResponseEntity<UsuarioDTO> findById(@PathVariable String id) {
         final Usuario usuario = this.usuarioService.findById(id);
         final UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
         return ResponseEntity.ok().body(usuarioDTO);
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDTO> insert(@RequestBody UsuarioDTO novoUsuario){
+    public ResponseEntity<UsuarioDTO> insert(@RequestBody UsuarioDTO novoUsuario) {
         final UsuarioDTO usuario = new UsuarioDTO(this.usuarioService.insert(new Usuario(novoUsuario)));
-        final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId()).toUri();
+        final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId())
+                .toUri();
         return ResponseEntity.created(uri).body(usuario);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable String id){
+    public ResponseEntity<Void> deleteById(@PathVariable String id) {
         this.usuarioService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UsuarioDTO> update(@PathVariable String id, @RequestBody UsuarioDTO usuarioNovosDados){
+    public ResponseEntity<UsuarioDTO> update(@PathVariable String id, @RequestBody UsuarioDTO usuarioNovosDados) {
         final UsuarioDTO usuario = new UsuarioDTO(this.usuarioService.update(id, new Usuario(usuarioNovosDados)));
         return ResponseEntity.ok().body(usuario);
     }
 
     @GetMapping(value = "/{id}/posts")
-    public ResponseEntity<List<Post>> findPostsByUserId(@PathVariable String id){
+    public ResponseEntity<List<Post>> findPostsByUserId(@PathVariable String id) {
         final Usuario usuario = this.usuarioService.findById(id);
         return ResponseEntity.ok().body(usuario.getPosts());
     }
