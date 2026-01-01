@@ -2,12 +2,7 @@ package br.com.ferdbgg.workshopmongo.dtos;
 
 import java.io.Serializable;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import br.com.ferdbgg.workshopmongo.domain.Usuario;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
