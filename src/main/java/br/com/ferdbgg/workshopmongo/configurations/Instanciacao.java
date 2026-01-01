@@ -44,7 +44,7 @@ public class Instanciacao implements CommandLineRunner {
         List<ComentarioDTO> comentariosDumb = new ArrayList<>();
         comentariosDumb.add(new ComentarioDTO("Boa viagem", simpleDateFormat.parse("2018-03-21"),
                 new AutorDTO(usuariosDumb.get(1))));
-        comentariosDumb.add(new ComentarioDTO("Boa viagem!!", simpleDateFormat.parse("2018-03-21"),
+        comentariosDumb.add(new ComentarioDTO("Boa viagem!!", simpleDateFormat.parse("2018-03-22"),
                 new AutorDTO(usuariosDumb.get(2))));
 
         List<Post> postsDumb = new ArrayList<>();
