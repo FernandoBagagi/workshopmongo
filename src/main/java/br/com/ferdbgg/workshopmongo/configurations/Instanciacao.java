@@ -1,7 +1,7 @@
 package br.com.ferdbgg.workshopmongo.configurations;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -15,52 +15,90 @@ import br.com.ferdbgg.workshopmongo.dtos.AutorDTO;
 import br.com.ferdbgg.workshopmongo.dtos.ComentarioDTO;
 import br.com.ferdbgg.workshopmongo.repositories.PostRepository;
 import br.com.ferdbgg.workshopmongo.repositories.UsuarioRepository;
+import lombok.val;
 
 @Configuration
 public class Instanciacao implements CommandLineRunner {
 
-    private final UsuarioRepository usuarioRepository;
-    private final PostRepository postRepository;
+        private final UsuarioRepository usuarioRepository;
+        private final PostRepository postRepository;
 
-    public Instanciacao(UsuarioRepository usuarioRepository, PostRepository postRepository) {
-        this.usuarioRepository = usuarioRepository;
-        this.postRepository = postRepository;
-    }
+        public Instanciacao(UsuarioRepository usuarioRepository, PostRepository postRepository) {
+                this.usuarioRepository = usuarioRepository;
+                this.postRepository = postRepository;
+        }
 
-    @Override
-    public void run(String... args) throws Exception {
+        @Override
+        public void run(String... args) throws Exception {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        simpleDateFormat.setTimeZone(TimeZone.getDefault());
+                this.usuarioRepository.deleteAll();
+                this.postRepository.deleteAll();
 
-        this.usuarioRepository.deleteAll();
-        this.postRepository.deleteAll();
+                final List<Usuario> usuariosDumb = List.of(
+                                new Usuario(
+                                                null,
+                                                "Maria Brown",
+                                                "maria@gmail.com" //
 
-        List<Usuario> usuariosDumb = new ArrayList<>();
-        usuariosDumb.add(new Usuario(null, "Maria Brown", "maria@gmail.com"));
-        usuariosDumb.add(new Usuario(null, "Alex Green", "alex@gmail.com"));
-        usuariosDumb.add(new Usuario(null, "Carlos José", "carlos@gmail.com"));
-        usuariosDumb = this.usuarioRepository.saveAll(usuariosDumb);
+                                ),
+                                new Usuario(
+                                                null,
+                                                "Alex Green",
+                                                "alex@gmail.com" //
 
-        List<ComentarioDTO> comentariosDumb = new ArrayList<>();
-        comentariosDumb.add(new ComentarioDTO("Boa viagem", simpleDateFormat.parse("2018-03-21"),
-                new AutorDTO(usuariosDumb.get(1))));
-        comentariosDumb.add(new ComentarioDTO("Boa viagem!!", simpleDateFormat.parse("2018-03-22"),
-                new AutorDTO(usuariosDumb.get(2))));
-                
-        final var usuario1 = Objects.requireNonNull(usuariosDumb.get(0));
+                                ),
+                                new Usuario(
+                                                null,
+                                                "Carlos José",
+                                                "carlos@gmail.com" //
 
-        List<Post> postsDumb = new ArrayList<>();
-        postsDumb.add(new Post(null, simpleDateFormat.parse("2018-03-21"), "Partiu viagem",
-                "Vou viajar para São Paulo. Abraços!", new AutorDTO(usuario1), comentariosDumb));
-        postsDumb.add(new Post(null, simpleDateFormat.parse("2018-03-23"), "Bom dia", "Acordei feliz hoje!",
-                new AutorDTO(usuario1), new ArrayList<>()));
-        postsDumb = this.postRepository.saveAll(postsDumb);
+                                )//
+                );
 
-        usuario1.getPosts().add(postsDumb.get(0));
-        usuario1.getPosts().add(postsDumb.get(1));
-        this.usuarioRepository.save(usuario1);
+                val usuariosSalvos = this.usuarioRepository.saveAll(Objects.requireNonNull(usuariosDumb));
 
-    }
+                final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                dateFormat.setTimeZone(TimeZone.getDefault());
+
+                final List<ComentarioDTO> comentariosDumb = List.of(
+                                new ComentarioDTO(
+                                                "Boa viagem",
+                                                dateFormat.parse("2018-03-21"),
+                                                new AutorDTO(usuariosSalvos.get(1)) //
+                                ),
+                                new ComentarioDTO(
+                                                "Boa viagem!!",
+                                                dateFormat.parse("2018-03-22"),
+                                                new AutorDTO(usuariosSalvos.get(2)) //
+                                ) //
+                );
+
+                final List<Post> postsDumb = List.of(
+                                new Post(
+                                                null,
+                                                dateFormat.parse("2018-03-21"),
+                                                "Partiu viagem",
+                                                "Vou viajar para São Paulo. Abraços!",
+                                                new AutorDTO(usuariosSalvos.get(0)),
+                                                comentariosDumb //
+                                ),
+                                new Post(
+                                                null,
+                                                dateFormat.parse("2018-03-23"),
+                                                "Bom dia",
+                                                "Acordei feliz hoje!",
+                                                new AutorDTO(usuariosSalvos.get(0)),
+                                                List.of() //
+                                )//
+                );
+
+                val postsSalvos = this.postRepository.saveAll(Objects.requireNonNull(postsDumb));
+
+                usuariosSalvos.get(0).getPosts().add(postsSalvos.get(0));
+                usuariosSalvos.get(0).getPosts().add(postsSalvos.get(1));
+
+                this.usuarioRepository.save(Objects.requireNonNull(usuariosSalvos.get(0)));
+
+        }
 
 }
