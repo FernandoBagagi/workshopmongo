@@ -1,8 +1,11 @@
 package br.com.ferdbgg.workshopmongo.resources;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +26,12 @@ public class PessoaResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<PessoaDTO>> findAll() {
-        // TODO: ver como paginar isso
-        final List<Pessoa> pessoasBanco = this.pessoaService.findAll();
-        final List<PessoaDTO> pessoasDTOs = pessoasBanco.stream().map(PessoaDTO::parse).toList();
+    public ResponseEntity<Page<PessoaDTO>> findAll(
+            @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) //
+            @NonNull Pageable pageable //
+    ) {
+        final Page<Pessoa> pessoasBanco = this.pessoaService.findAll(pageable);
+        final Page<PessoaDTO> pessoasDTOs = pessoasBanco.map(PessoaDTO::parse);
         return ResponseEntity.ok().body(pessoasDTOs);
     }
 

@@ -1,10 +1,12 @@
 package br.com.ferdbgg.workshopmongo.services;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import br.com.ferdbgg.workshopmongo.domain.Pessoa;
@@ -20,8 +22,8 @@ public class PessoaService {
         this.repository = repository;
     }
 
-    public List<Pessoa> findAll() {
-        return this.repository.findAll();
+    public Page<Pessoa> findAll(@NonNull Pageable pageable) {
+        return this.repository.findAll(pageable);
     }
 
     public Pessoa findById(String id) throws ObjetoNaoEncontradoException {
