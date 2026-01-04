@@ -1,7 +1,13 @@
 package br.com.ferdbgg.workshopmongo.resources;
 
+import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import br.com.ferdbgg.workshopmongo.domain.Pessoa;
+import br.com.ferdbgg.workshopmongo.dtos.PessoaDTO;
 import br.com.ferdbgg.workshopmongo.services.PessoaService;
 
 @RestController
@@ -12,6 +18,19 @@ public class PessoaResource {
 
     public PessoaResource(PessoaService pessoaService) {
         this.pessoaService = pessoaService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PessoaDTO>> findAll() {
+        //TODO: criar um Wrap/Result de resposta
+        
+        //TODO: ver como paginar isso
+        final List<Pessoa> pessoasBanco = this.pessoaService.findAll();
+
+        final List<PessoaDTO> pessoasDTOs = pessoasBanco.stream().map(PessoaDTO::parse).toList();
+
+        return ResponseEntity.ok().body(pessoasDTOs);
+
     }
 
 }
