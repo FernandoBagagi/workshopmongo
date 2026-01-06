@@ -3,13 +3,13 @@ package br.com.ferdbgg.workshopmongo.services;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import br.com.ferdbgg.workshopmongo.domain.Pessoa;
+import br.com.ferdbgg.workshopmongo.dtos.PessoaDTO;
 import br.com.ferdbgg.workshopmongo.repositories.PessoaRepository;
 import br.com.ferdbgg.workshopmongo.services.exceptions.ObjetoNaoEncontradoException;
 
@@ -27,7 +27,7 @@ public class PessoaService {
     }
 
     public Pessoa findById(String id) throws ObjetoNaoEncontradoException {
-        
+
         if (id == null || id.isBlank()) {
             throw new ObjetoNaoEncontradoException("vazio");
         }
@@ -37,26 +37,20 @@ public class PessoaService {
 
     }
 
-    public Pessoa insert(Pessoa pessoa) throws ObjetoNaoEncontradoException {
+    public PessoaDTO insert(@NonNull PessoaDTO pessoaDTONova) {
+        final Pessoa pessoaNova = Objects.requireNonNull(pessoaDTONova.toPessoa());
+        final Pessoa pessoaSalva = this.insert(pessoaNova);
+        return PessoaDTO.parse(pessoaSalva);
+    }
 
-        if (pessoa == null) {
-            // TODO: Fazer uma exceção Personalizada
-            throw new ObjetoNaoEncontradoException("vazio");
-        }
-
-        try {
-            return this.repository.save(pessoa);
-        } catch (OptimisticLockingFailureException e) {
-            // TODO: Fazer uma exceção Personalizada para quando der um erro ao salvar
-            throw new ObjetoNaoEncontradoException("vazio");
-        }
-
+    public Pessoa insert(@NonNull Pessoa pessoa) {
+        return this.repository.save(pessoa);
     }
 
     public void deleteById(String id) throws ObjetoNaoEncontradoException {
 
-        this.findById(id); //Se não lançar exceção é pq encontrou
-        
+        this.findById(id); // Se não lançar exceção é pq encontrou
+
         this.repository.deleteById(Objects.requireNonNull(id));
 
     }
@@ -68,7 +62,7 @@ public class PessoaService {
     }
 
     private Pessoa atualizarDados(Pessoa usuarioBanco, Pessoa usuarioNovosDados) {
-        
+
         if (!Objects.equals(usuarioBanco.getNome(), usuarioNovosDados.getNome())) {
             usuarioBanco.setNome(usuarioNovosDados.getNome());
         }
