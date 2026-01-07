@@ -33,23 +33,37 @@ public class PessoaResource {
 
     @GetMapping
     public ResponseEntity<Page<PessoaDTO>> findAll(
-            @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) //
+            @PageableDefault( //
+                    size = 20, //
+                    sort = "id", //
+                    direction = Sort.Direction.ASC //
+            ) //
             @NonNull Pageable pageable //
     ) {
+
         final Page<Pessoa> pessoasBanco = this.pessoaService.findAll(pageable);
+        
         final Page<PessoaDTO> pessoasDTOs = pessoasBanco.map(PessoaDTO::parse);
+        
         return ResponseEntity.ok().body(pessoasDTOs);
+    
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<PessoaDTO> findById(@PathVariable String id) {
+        
         final Pessoa pessoaBanco = this.pessoaService.findById(id);
+        
         final PessoaDTO pessoaDTO = PessoaDTO.parse(pessoaBanco);
+        
         return ResponseEntity.ok().body(pessoaDTO);
+    
     }
 
     @PostMapping
-    public ResponseEntity<PessoaDTO> insert(@RequestBody @NonNull PessoaDTO novaPessoa) {
+    public ResponseEntity<PessoaDTO> insert(
+            @RequestBody @NonNull PessoaDTO novaPessoa //
+    ) {
 
         final PessoaDTO pessoaSalva = this.pessoaService.insert(novaPessoa);
 
@@ -65,8 +79,11 @@ public class PessoaResource {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteById(@PathVariable @NonNull String id) {
+        
         this.pessoaService.deleteById(id);
+        
         return ResponseEntity.noContent().build();
+    
     }
 
 }
