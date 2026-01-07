@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,6 +61,12 @@ public class PessoaResource {
 
         return ResponseEntity.created(uriPessoaSalva).body(pessoaSalva);
 
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable @NonNull String id) {
+        this.pessoaService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
