@@ -47,11 +47,11 @@ public class PessoaService {
         return this.repository.save(pessoa);
     }
 
-    public void deleteById(String id) throws ObjetoNaoEncontradoException {
+    public void deleteById(@NonNull String id) throws ObjetoNaoEncontradoException {
 
         this.findById(id); // Se não lançar exceção é pq encontrou
 
-        this.repository.deleteById(Objects.requireNonNull(id));
+        this.repository.deleteById(id);
 
     }
 
