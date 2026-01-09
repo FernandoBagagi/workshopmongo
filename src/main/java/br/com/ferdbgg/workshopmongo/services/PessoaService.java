@@ -55,19 +55,30 @@ public class PessoaService {
 
     }
 
-    public Pessoa update(String id, Pessoa pessoaNovosDados) throws ObjetoNaoEncontradoException {
-        final Pessoa pessoaBanco = this.findById(id);
-        final Pessoa pessoaAtualizada = this.atualizarDados(pessoaBanco, pessoaNovosDados);
-        return this.repository.save(Objects.requireNonNull(pessoaAtualizada));
+    public PessoaDTO update( //
+            @NonNull String id,
+            @NonNull PessoaDTO pessoaNovosDados //
+    ) throws ObjetoNaoEncontradoException {
+
+        final Pessoa pessoaBanco = Objects.requireNonNull(this.findById(id));
+
+        this.atualizarDados(pessoaBanco, pessoaNovosDados);
+
+        final Pessoa pessoaSalva = this.repository.save(pessoaBanco);
+
+        return PessoaDTO.parse(pessoaSalva);
+
     }
 
-    private Pessoa atualizarDados(Pessoa usuarioBanco, Pessoa usuarioNovosDados) {
+    private void atualizarDados( //
+            @NonNull final Pessoa usuarioBanco,
+            @NonNull PessoaDTO usuarioNovosDados //
+    ) {
 
-        if (!Objects.equals(usuarioBanco.getNome(), usuarioNovosDados.getNome())) {
+        if (usuarioNovosDados.getNome() != null) {
             usuarioBanco.setNome(usuarioNovosDados.getNome());
         }
 
-        return usuarioBanco;
     }
 
 }
