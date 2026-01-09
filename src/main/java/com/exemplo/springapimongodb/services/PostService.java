@@ -1,0 +1,82 @@
+package com.exemplo.springapimongodb.services;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.exemplo.springapimongodb.domain.Post;
+import com.exemplo.springapimongodb.repositories.PostRepository;
+import com.exemplo.springapimongodb.services.exceptions.ObjetoNaoEncontradoException;
+
+@Service
+public class PostService {
+
+    private final PostRepository postRepository;
+
+    public PostService(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
+
+    public List<Post> findAll() {
+        return this.postRepository.findAll();
+    }
+
+    public Post findById(String id) {
+        Optional<Post> post = this.postRepository.findById(id);
+        return post.orElseThrow(() -> new ObjetoNaoEncontradoException(id));
+    }
+
+    public List<Post> findByTituloContaining(String palavra) {
+        // return this.postRepository.findByTituloContainingIgnoreCase(palavra);
+        // return this.postRepository.findByTituloContainingIgnoreCase(palavra);
+        return this.postRepository.encontrarPorTitulo(palavra);
+    }
+
+    public List<Post> findContaining(String palavra, Date dataMin, Date dataMax) {
+        dataMax = new Date(dataMax.getTime() + 24 * 60 * 60 * 1000); // Pra ir até 00:00 do outro dia
+        return this.postRepository.buscaCompleta(palavra, dataMin, dataMax);
+    }
+
+    public Post insert(Post novoPost) {
+        return this.postRepository.save(novoPost);
+    }
+
+    public void deleteById(String id) {
+        Optional<Post> post = this.postRepository.findById(id);
+        if (post.isPresent()) {
+            this.postRepository.deleteById(id);
+        } else {
+            throw new ObjetoNaoEncontradoException(id);
+        }
+    }
+
+    public Post update(String id, Post postNovosDados) {
+        Optional<Post> post = this.postRepository.findById(id);
+        if (post.isPresent()) {
+            final Post postBanco = post.get();
+            this.atualizarDados(postBanco, postNovosDados);
+            return this.postRepository.save(postBanco);
+        } else {
+            throw new ObjetoNaoEncontradoException(id);
+        }
+    }
+
+    private void atualizarDados(Post postBanco, Post postNovosDados) {
+        // Verificar se a regra de negócio permite colocar null ou não
+        if (postNovosDados.getData() != null) {
+            postBanco.setData(postNovosDados.getData());
+        }
+        if (postNovosDados.getTitulo() != null) {
+            postBanco.setTitulo(postNovosDados.getTitulo());
+        }
+        if (postNovosDados.getCorpo() != null) {
+            postBanco.setCorpo(postNovosDados.getCorpo());
+        }
+        if (postNovosDados.getAutor() != null) {
+            postBanco.setAutor(postNovosDados.getAutor());
+        }
+    }
+
+}
