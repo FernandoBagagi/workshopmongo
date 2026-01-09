@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,22 +43,22 @@ public class PessoaResource {
     ) {
 
         final Page<Pessoa> pessoasBanco = this.pessoaService.findAll(pageable);
-        
+
         final Page<PessoaDTO> pessoasDTOs = pessoasBanco.map(PessoaDTO::parse);
-        
+
         return ResponseEntity.ok().body(pessoasDTOs);
-    
+
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<PessoaDTO> findById(@PathVariable String id) {
-        
+
         final Pessoa pessoaBanco = this.pessoaService.findById(id);
-        
+
         final PessoaDTO pessoaDTO = PessoaDTO.parse(pessoaBanco);
-        
+
         return ResponseEntity.ok().body(pessoaDTO);
-    
+
     }
 
     @PostMapping
@@ -79,11 +80,23 @@ public class PessoaResource {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteById(@PathVariable @NonNull String id) {
-        
+
         this.pessoaService.deleteById(id);
-        
+
         return ResponseEntity.noContent().build();
-    
+
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<PessoaDTO> update( //
+            @PathVariable @NonNull String id,
+            @RequestBody @NonNull PessoaDTO pessoaNovosDados //
+    ) {
+
+        final PessoaDTO pessoa = this.pessoaService.update(id, pessoaNovosDados);
+
+        return ResponseEntity.ok(pessoa);
+
     }
 
 }
